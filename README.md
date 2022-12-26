@@ -1,0 +1,1 @@
+# capacitor-plugin-esptouch-smartconfig
