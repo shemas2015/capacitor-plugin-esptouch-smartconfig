@@ -14,6 +14,8 @@ npx cap sync
 <docgen-index>
 
 * [`echo(...)`](#echo)
+* [`connect(...)`](#connect)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
@@ -33,5 +35,32 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
+
+
+### connect(...)
+
+```typescript
+connect(options: Iconnect) => Promise<Iconnect>
+```
+
+| Param         | Type                                          |
+| ------------- | --------------------------------------------- |
+| **`options`** | <code><a href="#iconnect">Iconnect</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#iconnect">Iconnect</a>&gt;</code>
+
+--------------------
+
+
+### Interfaces
+
+
+#### Iconnect
+
+| Prop           | Type                |
+| -------------- | ------------------- |
+| **`ip`**       | <code>string</code> |
+| **`ssid`**     | <code>string</code> |
+| **`password`** | <code>string</code> |
 
 </docgen-api>

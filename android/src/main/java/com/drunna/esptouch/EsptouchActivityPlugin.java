@@ -1,6 +1,8 @@
 package com.drunna.esptouch;
 
 import android.content.Context;
+import android.net.InetAddresses;
+import android.util.Log;
 
 import com.espressif.EsptouchAsyncTask;
 import com.espressif.util.ByteUtil;
@@ -11,6 +13,10 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @CapacitorPlugin(name = "EsptouchActivity")
 public class EsptouchActivityPlugin extends Plugin {
 
@@ -19,11 +25,36 @@ public class EsptouchActivityPlugin extends Plugin {
 
     @PluginMethod
     public void echo(PluginCall call) {
+        String value = call.getString("value");
+        JSObject ret = new JSObject();
+        ret.put("value", implementation.echo(value));
+        call.resolve(ret);
+    }
 
-        String mSsid = "Delfina";
-        String pwdStr = "51597541";
-        String mBssid = "d0:79:80:88:02:81";
-        String ip = "192.168.1.10";
+    @PluginMethod
+    public void connect(PluginCall call) {
+        JSObject ret = new JSObject();
+
+        String mSsid = call.getString("ssid");
+        String pwdStr = call.getString("password");
+        String ip = call.getString("ip");
+        String mBssid = "00:00:00:00:00:00";
+
+
+        Log.d("debug" , mSsid);
+
+        boolean isValid = this.checkIPv4(ip);
+        if( !isValid ){
+            call.errorCallback("Ip address is not valid!");
+            return;
+        }
+        if( mSsid.equals("") ){
+            call.errorCallback("Ssid can not be null");
+            return;
+        }
+        //check ip
+        //Check ssid
+
         byte[] ssid = mSsidBytes == null ? ByteUtil.getBytesByString(mSsid)
                 : mSsidBytes;
         byte[] password =  ByteUtil.getBytesByString(pwdStr);
@@ -31,18 +62,21 @@ public class EsptouchActivityPlugin extends Plugin {
         byte[] deviceCount = "1".getBytes();
         byte[] broadcast = {(byte) 1};
         Context context = this.getActivity().getApplicationContext();
-
-
-
-
         EsptouchAsyncTask mTask = new EsptouchAsyncTask(ssid, bssid, password, deviceCount, broadcast,ip , context);
         mTask.__listenAsyn();
         mTask.execute();
-
-        String value = call.getString("value");
-
-        JSObject ret = new JSObject();
-        ret.put("value", implementation.echo(value));
+        ret.put("status","success");
         call.resolve(ret);
+    }
+    public static final boolean checkIPv4(final String ip) {
+        boolean isIPv4;
+        try {
+            final InetAddress inet = InetAddress.getByName(ip);
+            isIPv4 = inet.getHostAddress().equals(ip)
+                    && inet instanceof Inet4Address;
+        } catch (final UnknownHostException e) {
+            isIPv4 = false;
+        }
+        return isIPv4;
     }
 }

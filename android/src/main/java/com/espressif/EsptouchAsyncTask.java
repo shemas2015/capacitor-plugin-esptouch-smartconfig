@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EsptouchAsyncTask extends AsyncTask {
+public class EsptouchAsyncTask{
 
     private EsptouchTaskParameter mParameter = new EsptouchTaskParameter();
     private final UDPSocketServer mSocketServer;
@@ -39,6 +39,7 @@ public class EsptouchAsyncTask extends AsyncTask {
     private final List<EsptouchResult> mEsptouchResultList = new ArrayList<>();;
     private volatile Map<String, Integer> mBssidTaskSucCountMap  = new HashMap<>();
     private IEsptouchListener mEsptouchListener;
+    private boolean isInterrupt = false;
 
 
     public EsptouchAsyncTask(byte[] ssid, byte[] bssid, byte[] password, byte[] deviceCount, byte[] broadcast, String innetAdrres, Context context) {
@@ -62,8 +63,7 @@ public class EsptouchAsyncTask extends AsyncTask {
 
     }
 
-    @Override
-    protected Object doInBackground(Object[] objects) {
+    public void execute() {
 
 
         long startTime = System.currentTimeMillis();
@@ -76,15 +76,11 @@ public class EsptouchAsyncTask extends AsyncTask {
 
         int index = 0;
 
-        //while (!mIsInterrupt) {
-        while (true) {
-
+        while (!isInterrupt) {
             if (currentTime - lastTime >= mParameter.getTimeoutTotalCodeMillisecond()) {
-
-
                 // send guide code
                 while (System.currentTimeMillis() - currentTime < mParameter
-                        .getTimeoutGuideCodeMillisecond()) {
+                        .getTimeoutGuideCodeMillisecond() && !isInterrupt) {
                     mSocketClient.sendData(gcBytes2,
                             mParameter.getTargetHostname(),
                             mParameter.getTargetPort(),
@@ -109,7 +105,7 @@ public class EsptouchAsyncTask extends AsyncTask {
                 break;
             }
         }
-        return null;
+
     }
 
     public void __listenAsyn() {
@@ -155,14 +151,7 @@ public class EsptouchAsyncTask extends AsyncTask {
                         }
                     }
                 }
-                Log.i("debug","Sebas: mi perro terminó");
-                /*
-                mIsSuc = mEsptouchResultList.size() >= mParameter
-                        .getExpectTaskResultCount();
-                __EsptouchTask.this.__interrupt();
-
-                 */
-
+                isInterrupt = true;
             }
         };
         mTask.start();
