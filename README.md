@@ -1,3 +1,5 @@
+# Requirements
+Capacitor 4
 
 # esptouch-smartconfig-plugin
 
