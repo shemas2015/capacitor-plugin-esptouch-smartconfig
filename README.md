@@ -8,7 +8,7 @@ Ionic capacitor plugin to connect esp devices with smart config
 ## Install
 
 ```bash
-npm install esptouch-smartconfig-plugin
+npm install https://github.com/shemas2015/capacitor-plugin-esptouch-smartconfig.git
 npx cap sync
 ```
 
