@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # esptouch-smartconfig-plugin
 
 Ionic capacitor plugin to connect esp devices with smart config
@@ -65,6 +65,26 @@ connect(options: Iconnect) => Promise<Iconnect>
 | **`password`** | <code>string</code> |
 
 </docgen-api>
-=======
-# capacitor-plugin-esptouch-smartconfig
->>>>>>> 0dd3f21502075a06d619422327b54fdc2508f45e
+
+# Works example
+## Import
+```
+import { EsptouchActivity } from 'esptouch-smartconfig-plugin';
+```
+## Use
+```
+const conection = {
+      ip      : "Android Device Ip",
+      ssid    : "SSID name - Wifi Network name",
+      password: "Wifi password",
+    }
+    this.disabled = true;
+
+    EsptouchActivity.connect(conection).then( (result:any) => {
+      this.disabled = false ;
+      console.log("resultado: ",result);
+    }).catch(error => {
+      this.disabled = false ;
+      console.log( "error" , error );
+    })
+```
