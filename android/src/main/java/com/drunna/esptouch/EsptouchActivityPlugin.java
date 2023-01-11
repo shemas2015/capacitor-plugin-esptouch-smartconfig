@@ -5,6 +5,7 @@ import android.net.InetAddresses;
 import android.util.Log;
 
 import com.espressif.EsptouchAsyncTask;
+import com.espressif.esptouch.EsptouchResult;
 import com.espressif.util.ByteUtil;
 import com.espressif.util.TouchNetUtil;
 import com.getcapacitor.JSObject;
@@ -16,6 +17,7 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 @CapacitorPlugin(name = "EsptouchActivity")
 public class EsptouchActivityPlugin extends Plugin {
@@ -64,8 +66,12 @@ public class EsptouchActivityPlugin extends Plugin {
         Context context = this.getActivity().getApplicationContext();
         EsptouchAsyncTask mTask = new EsptouchAsyncTask(ssid, bssid, password, deviceCount, broadcast,ip , context);
         mTask.__listenAsyn();
-        mTask.execute();
-        ret.put("status","success");
+        List<EsptouchResult> results =  mTask.execute();
+        if(results.size() < 1){
+            call.errorCallback("invalid configuration!");
+            return;
+        }
+        ret.put("mac" , results.get(0).getBssid());
         call.resolve(ret);
     }
     public static final boolean checkIPv4(final String ip) {

@@ -63,7 +63,7 @@ public class EsptouchAsyncTask{
 
     }
 
-    public void execute() {
+    public List<EsptouchResult> execute() {
 
 
         long startTime = System.currentTimeMillis();
@@ -105,6 +105,7 @@ public class EsptouchAsyncTask{
                 break;
             }
         }
+        return mEsptouchResultList;
 
     }
 
