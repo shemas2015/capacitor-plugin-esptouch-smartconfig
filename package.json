@@ -17,10 +17,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shemas2015/capacitor-plugin-esptouch-smartconfig.git.git"
+    "url": "git+https://github.com/shemas2015/capacitor-plugin-esptouch-smartconfig.git"
   },
   "bugs": {
-    "url": "https://github.com/shemas2015/capacitor-plugin-esptouch-smartconfig.git/issues"
+    "url": "https://github.com/shemas2015/capacitor-plugin-esptouch-smartconfig/issues"
   },
   "keywords": [
     "capacitor",
